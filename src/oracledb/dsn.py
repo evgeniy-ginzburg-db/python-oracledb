@@ -43,15 +43,15 @@ def _check_arg(name: str, value: str) -> None:
 
 
 def makedsn(
-        host: str,
-        port: int,
-        sid: str = None,
-        service_name: str = None,
-        dedicated: bool = False,
-        ssl: bool = False,
-        region: str = None,
-        sharding_key: str = None,
-        super_sharding_key: str = None,
+    host: str,
+    port: int,
+    sid: str = None,
+    service_name: str = None,
+    dedicated: bool = False,
+    ssl: bool = False,
+    region: str = None,
+    sharding_key: str = None,
+    super_sharding_key: str = None,
 ) -> str:
     """
     Return a string suitable for use as the dsn parameter for connect(). This
