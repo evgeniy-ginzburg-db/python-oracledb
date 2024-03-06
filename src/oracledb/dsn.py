@@ -43,21 +43,28 @@ def _check_arg(name: str, value: str) -> None:
 
 
 def makedsn(
-    host: str,
-    port: int,
-    sid: str = None,
-    service_name: str = None,
-    region: str = None,
-    sharding_key: str = None,
-    super_sharding_key: str = None,
+        host: str,
+        port: int,
+        sid: str = None,
+        service_name: str = None,
+        dedicated: bool = False,
+        ssl: bool = False,
+        region: str = None,
+        sharding_key: str = None,
+        super_sharding_key: str = None,
 ) -> str:
     """
     Return a string suitable for use as the dsn parameter for connect(). This
     string is identical to the strings that are defined in the tnsnames.ora
     file.
     """
+    proto = 'TCP'
     connect_data_parts = []
     _check_arg("host", host)
+    if ssl:
+        proto = 'TCPS'
+    if dedicated:
+        connect_data_parts.append('(SERVER=DEDICATED)')
     if sid is not None:
         _check_arg("sid", sid)
         connect_data_parts.append(f"(SID={sid})")
@@ -75,6 +82,6 @@ def makedsn(
         connect_data_parts.append(f"(SUPER_SHARDING_KEY={super_sharding_key})")
     connect_data = "".join(connect_data_parts)
     return (
-        f"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={host})"
+        f"(DESCRIPTION=(ADDRESS=(PROTOCOL={proto})(HOST={host})"
         f"(PORT={port}))(CONNECT_DATA={connect_data}))"
     )
